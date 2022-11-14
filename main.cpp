@@ -10,8 +10,14 @@
 
 
 int main() {
-	Memory mem;
-	mem.showMem();
+	FileParser parser;
+	parser.getCommands("commands.txt");
+
+	
+	Processor CPU;
+	CPU.mainProc(parser.cmd_list);
+
+
 }
 
 

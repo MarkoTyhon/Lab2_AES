@@ -11,4 +11,4 @@ struct HexTranslator {
 
 	std::string bin_num;
 	std::string str_hex_num;
-};
+}; 

@@ -13,7 +13,7 @@ struct Processor{
 	void tact1();
 	void tact2();
 
-	void mainProc(std::pair <std::string, std::string> command);
+	void mainProc(std::vector<std::pair <std::string, std::string>> cmd_list);
 
 	void opXOR();
 	void opMOV();
@@ -23,26 +23,24 @@ struct Processor{
 	void showProces();
 	void doCommand();
 	void clean_array();
-	void addToStack(int st_i, std::string val);
-	void gtAllVlFrStck(int st_i);
-	void stackReplace(int st_i, int indx, std::string val);
-	void stackReplace(int st_i, std::string val);
+	void gtAllVlFrStck();
+	void stackReplace(int indx, std::string val);
+	void stackReplace(std::string val);
 	void addRes(std::string res);
-	std::string gtNVlFrStck(int st_i, int indx);
+	std::string gtNVlFrStck(int indx);
 	std::pair<std::string, std::string> split(std::string str, int dlmtr_ln, std::size_t index);
 	std::string getValue(int indx);
 	
-	int cmd_counter = 0;
-	std::stack<std::string*> stack1;
-	std::stack<std::string*> stack2;
+	std::stack<std::string> stack1;
 	std::string curr_command[3];
 	std::string empty_arr[3] = {"", "", ""};
 	Memory mem;
 	FileParser parser;
 	BinTranslator bin;
 
-	int TC;
-	int PS;
+	int TC = 0;
+	int PS = 0;
+	int PC = 0;
 	std::string IR;
 
 	

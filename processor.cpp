@@ -4,35 +4,34 @@
 #include <vector>
 #include <stack>
 #include <iostream>
+#include <stdlib.h>
 
 #include "propertis.h"
 #include "binTranslator.h"
 
 
-void Processor::mainProc(std::pair <std::string, std::string> command) {
-	clean_array();
+void Processor::mainProc(std::vector<std::pair <std::string, std::string>> cmd_list) {
 	int tact = 0;
-	getCommand(command);
-	while (true) {
-		tact += 1;
-		if (tact % 2)
-			tact1();
-		else 
-			tact2();
+	for (std::pair <std::string, std::string> command : cmd_list) {
+		clean_array();
+		getCommand(command);
+		tact = 0;
+		while (tact < 2) {
+			tact += 1;
+			if (tact % 2)
+				tact1();
+			else
+				tact2();
+		}
 	}
 }
 
 void Processor::opXOR() {
-	int int_value = std::atoi(getValue(1).c_str());
-	bin.numToBin(int_value);
-	std::string el1 = bin.str_bin_num;
+	std::string el1 = getValue(1);
 
-	int_value = std::atoi(getValue(2).c_str());
-	bin.numToBin(int_value);
-	std::string el2 = bin.str_bin_num;;
+	std::string el2 = getValue(2);
 
 	std::string res = "";
-	
 
 	for (int i = 0; i < BIT; i++) {
 		if (el1[i] == el2[i])
@@ -40,62 +39,51 @@ void Processor::opXOR() {
 		else
 			res += "1";
 	}
-
 	addRes(res);
 
 }
 
 void Processor::opLOAD() {
-	int int_value = std::atoi(getValue(2).c_str());
-	bin.numToBin(int_value);
+	std::string val = getValue(2);
+
 	if (curr_command[1].find("[") == std::string::npos)
-		mem.addToMem(bin.str_bin_num);
+		mem.addToMem(val);
 	else
-		mem.addToMem(std::atoi(curr_command[1].substr(curr_command[1].length() - 2, 1).c_str()), bin.str_bin_num);
+		mem.addToMem(std::stoi(curr_command[1].substr(curr_command[1].length() - 2, 1).c_str()), val);
 
 }
 
 std::string Processor::getValue(int indx) {
 	if (curr_command[indx].find("stack") != std::string::npos) {
 		if (curr_command[indx].find("[") == std::string::npos){
-			if (curr_command[2].find("1") == std::string::npos)
-				return *stack2.top();
-			else
-				return *stack1.top();
+			return stack1.top();
 		}
 		else {
-			if (curr_command[2].find("1") == std::string::npos)
-				return gtNVlFrStck(2, std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
-			else
-				return gtNVlFrStck(1, std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
+			return gtNVlFrStck(std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
 		}
 	}
-	else if (curr_command[2].find("mem") != std::string::npos) {
-		return mem.getFromMem(std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
+	else if (curr_command[indx].find("mem") != std::string::npos) {
+		return mem.getFromMem(std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
 	}
 	else {
-		int int_value = std::atoi(curr_command[indx].c_str());
+		int int_value = std::stoi(curr_command[indx].c_str());
 		bin.numToBin(int_value);
 		return bin.str_bin_num;
 	}
 }
 
 void Processor::opMOV() {
-	int int_value = std::atoi(curr_command[2].c_str());
+	int int_value = std::stoi(curr_command[2].c_str());
 	bin.numToBin(int_value);
-	if (curr_command[1].find("1") == std::string::npos)
-		addToStack(2, bin.str_bin_num);
-	else
-		addToStack(1, bin.str_bin_num);
+	stack1.push(bin.str_bin_num);
+
 }
 
 void Processor::getCommand(std::pair <std::string, std::string> command) {
 	std::size_t index;
 	std::pair<std::string, std::string> operands;
 	curr_command[0] = command.first;
-	if ((index = command.second.find("],")) != std::string::npos)
-		operands = split(command.second, 2, index);
-	else if ((index = command.second.find(",")) != std::string::npos)
+	if ((index = command.second.find(",")) != std::string::npos)
 		operands = split(command.second, 1, index);
 	
 	if (index != std::string::npos) {
@@ -120,8 +108,8 @@ void Processor::clean_array() {
 
 void Processor::tact1() {
 	TC = 1;
-	IR = curr_command[0] + curr_command[1] + curr_command[2];
-	++cmd_counter;
+	IR = curr_command[0] + " " + curr_command[1]+ "," + curr_command[2];
+	++PC;
 
 	if (curr_command[2].find("-") == std::string::npos)
 		PS = 0;
@@ -148,64 +136,49 @@ void Processor::doCommand() {
 		opXOR();
 	}
 }
-
-void Processor::addToStack(int st_i, std::string val) {
-	if (st_i == 1) 
-		stack1.push(mem.addToMem(val));
 	
-	if (st_i == 2) 
-		stack2.push(mem.addToMem(val));
+
+std::string Processor::gtNVlFrStck(int indx) {
+	std::stack<std::string> loc_stack;
+	loc_stack = stack1;
+
+	for (int i = 0; i < stack1.size() - indx; i++) {
+		loc_stack.pop();
+	}
+	return loc_stack.top();
+}
+
+void Processor::gtAllVlFrStck() {
+	std::stack<std::string> loc_stack;
+	loc_stack = stack1;
+
+	if (!loc_stack.empty()) {
+
+		while(!loc_stack.empty()) {
+			std::cout << loc_stack.top() << " ";
+			loc_stack.pop();
+		}
+	}
+	std::cout << "\n";
+}
+
+void Processor::stackReplace(int indx, std::string val) {
+	std::stack<std::string> loc_stack;
+	for (int i = 0; i < stack1.size() - indx; i++) {
+		loc_stack.push(stack1.top());
+		stack1.pop();
+	}
+	stack1.push(val);
+	for (int i = 0; i < loc_stack.size(); i++) {
+		stack1.push(loc_stack.top());
+		loc_stack.pop();
+	}
 	
 }
 
-std::string Processor::gtNVlFrStck(int st_i, int indx) {
-	std::stack<std::string*> loc_stack;
-	if (st_i == 1)
-		 loc_stack = stack1;
-	else
-		 loc_stack = stack2;
-
-	for (int i = 0; i < stack1.size() - st_i + 1; i++) {
-		loc_stack.pop();
-	}
-	return *loc_stack.top();
-}
-
-void Processor::gtAllVlFrStck(int st_i) {
-	std::stack<std::string*> loc_stack;
-	if (st_i == 1)
-		loc_stack = stack1;
-	else
-		loc_stack = stack2;
-
-	for (int i = 0; i < stack1.size()-1; i++) {//////
-		std::cout << *loc_stack.top() << " ";
-		loc_stack.pop();
-	}
-}
-
-void Processor::stackReplace(int st_i, int indx, std::string val) {
-	std::stack<std::string*> loc_stack;
-	if (st_i == 1)
-		loc_stack = stack1;
-	else
-		loc_stack = stack2;
-
-	for (int i = 0; i < stack1.size() - st_i + 1; i++) {
-		loc_stack.pop();
-	}
-	std::string* pointer = loc_stack.top();
-	*pointer = val;
-}
-
-void Processor::stackReplace(int st_i, std::string val) {
-	std::stack<std::string*> loc_stack;
-	if (st_i == 1)
-		loc_stack = stack1;
-	else
-		loc_stack = stack2;
-	std::string* pointer = loc_stack.top();
-	*pointer = val;
+void Processor::stackReplace(std::string val) {
+	stack1.pop();
+	stack1.push(val);
 }
 
 void Processor::addRes(std::string res) {
@@ -213,23 +186,31 @@ void Processor::addRes(std::string res) {
 	if (curr_command[indx].find("stack") != std::string::npos) {
 
 		if (curr_command[indx].find("[") == std::string::npos) {
-			if (curr_command[2].find("1") == std::string::npos)
-				stackReplace(2, res);
-			else
-				stackReplace(1, res);
+			stackReplace(res);
 		}
 		else {
-			if (curr_command[2].find("1") == std::string::npos)
-				stackReplace(2, std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()), res);
-			else
-				stackReplace(1, std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()), res);
+			stackReplace(std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()), res);
 		}
 	}
-	else if (curr_command[2].find("mem") != std::string::npos) {
-		mem.addToMem(std::atoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()), res);
+	else if (curr_command[indx].find("mem") != std::string::npos) {
+		mem.memory[std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str())] = res;
 	}
 }
 
 void Processor::showProces() {
+	std::cout << "\n\n----------------------------------------------------------------------------------\n\n";
+
+	std::cout << "IR: " << IR << "\n";
+
+	std::cout << "Stack1: "; 
+	gtAllVlFrStck();
+
+	mem.showMem();
+
+	std::cout << "PS: " << PS << "\n";
+
+	std::cout << "PC: " << PC << "\n";
+
+	std::cout << "TC: " << TC;
 
 }

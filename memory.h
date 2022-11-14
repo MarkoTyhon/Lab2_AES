@@ -8,8 +8,8 @@ struct Memory
 {
 	Memory();
 	
-	std::string* addToMem(std::string el);
-	std::string* addToMem(int indx, std::string el);
+	void addToMem(std::string el);
+	void addToMem(int indx, std::string el);
 	std::string getFromMem(int indx);
 	void showMem();
 
