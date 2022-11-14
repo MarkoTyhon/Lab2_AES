@@ -2,19 +2,13 @@
 
 #include <ios>
 #include <sstream>
+#include <bitset>
 
 #include "propertis.h"
 
 
-HexTranslator::HexTranslator() {
-	hex_num = 0;
-	int dec_num = 0;
-	str_hex_num = "";
-}
-
-void HexTranslator::numToHex(std::string bin_num) {
-	binToDec(bin_num);
-	if (dec_num > MAX_NUMBER) toHexNegativ();
+void HexTranslator::numToHex(std::string binn) {
+	bin_num = binn;
 	toHex();
 	toNHex();
 	
@@ -27,19 +21,9 @@ void HexTranslator::toNHex() {
 }
 
 void HexTranslator::toHex()
-{
-	std::stringstream ss;
-	ss << std::hex << dec_num; // int decimal_value
-	std::string res(ss.str());
-
-	str_hex_num = res;
-}
-
-void HexTranslator::binToDec(std::string bin_num) {
-	int int_bin = std::atoi(bin_num.c_str());
-}
-
-void HexTranslator::toHexNegativ() {
-	dec_num -= pow(2, BIT) - 1;
-	dec_num = 0xffffffff - abs(dec_num) + 1;
+{  
+	std::bitset<BIT> set(bin_num);
+	std::stringstream res;
+	res << std::hex << std::uppercase << set.to_ulong();
+	str_hex_num = res.str();
 }
