@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <conio.h>
 
 #include "memory.h"
 #include "fileParser.h"
@@ -27,6 +28,7 @@ struct Processor{
 	void stackReplace(int indx, std::string val);
 	void stackReplace(std::string val);
 	void addRes(std::string res);
+	int pressAnyKey();
 	std::string gtNVlFrStck(int indx);
 	std::pair<std::string, std::string> split(std::string str, int dlmtr_ln, std::size_t index);
 	std::string getValue(int indx);

@@ -4,7 +4,7 @@
 #include <vector>
 #include <stack>
 #include <iostream>
-#include <stdlib.h>
+#include <conio.h>
 
 #include "propertis.h"
 #include "binTranslator.h"
@@ -12,16 +12,19 @@
 
 void Processor::mainProc(std::vector<std::pair <std::string, std::string>> cmd_list) {
 	int tact = 0;
+	int exit = 0;
 	for (std::pair <std::string, std::string> command : cmd_list) {
 		clean_array();
 		getCommand(command);
 		tact = 0;
-		while (tact < 2) {
+		if (exit == 27) break;
+		while ((tact < 2) && (exit != 27)) {
 			tact += 1;
 			if (tact % 2)
 				tact1();
 			else
 				tact2();
+			exit = pressAnyKey();
 		}
 	}
 }
@@ -205,7 +208,7 @@ void Processor::addRes(std::string res) {
 }
 
 void Processor::showProces() {
-	std::cout << "\n" + std::string(115, '-') + "\n\n";
+	std::cout <<std::string(115, '-') + "\n\n";
 
 	std::cout << "IR: " << IR << "\n\n";
 
@@ -221,4 +224,17 @@ void Processor::showProces() {
 
 	std::cout << "TC: " << TC << "\n";
 
+	std::cout << "\n" + std::string(115, '-');
+
+}
+
+int Processor::pressAnyKey() {
+	std::cout << "\nPress any key to continue or ESC to exit...\n";
+#if _WIN32
+	int exit  = _getch();
+#endif
+#if linux
+	int exit = getch();
+#endif
+	return exit;
 }
