@@ -45,6 +45,6 @@ void Memory::showMem() {
 		if (i != RAM * HEX_LEN / 2 - 1) std::cout << ".";
 		++counter;
 	}
-	std::cout << "\n";
+	std::cout << "\n\n";
 
 }

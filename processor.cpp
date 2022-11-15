@@ -34,7 +34,7 @@ void Processor::opXOR() {
 	std::string res = "";
 
 	for (int i = 0; i < BIT; i++) {
-		if (el1[i] == el2[i])
+		if (el1.at(i) == el2.at(i))
 			res += "0";
 		else
 			res += "1";
@@ -141,8 +141,8 @@ void Processor::doCommand() {
 std::string Processor::gtNVlFrStck(int indx) {
 	std::stack<std::string> loc_stack;
 	loc_stack = stack1;
-
-	for (int i = 0; i < stack1.size() - indx; i++) {
+	std::cout << loc_stack.size();
+	while (loc_stack.size() != indx + 1) {
 		loc_stack.pop();
 	}
 	return loc_stack.top();
@@ -151,23 +151,30 @@ std::string Processor::gtNVlFrStck(int indx) {
 void Processor::gtAllVlFrStck() {
 	std::stack<std::string> loc_stack;
 	loc_stack = stack1;
-
-	if (!loc_stack.empty()) {
-
-		while(!loc_stack.empty()) {
-			std::cout << loc_stack.top() << " ";
-			loc_stack.pop();
+	std::string buf;
+	int ccount = -1;
+	while(!loc_stack.empty()) {
+		buf = loc_stack.top();
+		for (int i = 0; i < BIT / 8; i++) {
+			std::cout << buf.substr(i * 8, 8);
+			if (i != BIT/8-1) std::cout << ".";
 		}
+		std::cout << "\t";
+		loc_stack.pop();
+		if (ccount % 3 == 1) std::cout << "\n";
+		++ccount;
 	}
-	std::cout << "\n";
+	std::cout << "\n\n";
 }
 
 void Processor::stackReplace(int indx, std::string val) {
 	std::stack<std::string> loc_stack;
-	for (int i = 0; i < stack1.size() - indx; i++) {
+	while (stack1.size() < indx) {
 		loc_stack.push(stack1.top());
 		stack1.pop();
 	}
+	stack1.pop();
+
 	stack1.push(val);
 	for (int i = 0; i < loc_stack.size(); i++) {
 		stack1.push(loc_stack.top());
@@ -193,24 +200,25 @@ void Processor::addRes(std::string res) {
 		}
 	}
 	else if (curr_command[indx].find("mem") != std::string::npos) {
-		mem.memory[std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str())] = res;
+		mem.addToMem(std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()),res);
 	}
 }
 
 void Processor::showProces() {
-	std::cout << "\n\n----------------------------------------------------------------------------------\n\n";
+	std::cout << "\n" + std::string(115, '-') + "\n\n";
 
-	std::cout << "IR: " << IR << "\n";
+	std::cout << "IR: " << IR << "\n\n";
 
-	std::cout << "Stack1: "; 
+	std::cout << "Stack1:\n"; 
 	gtAllVlFrStck();
 
+	std::cout << "RAM:\n";
 	mem.showMem();
 
 	std::cout << "PS: " << PS << "\n";
 
 	std::cout << "PC: " << PC << "\n";
 
-	std::cout << "TC: " << TC;
+	std::cout << "TC: " << TC << "\n";
 
 }
