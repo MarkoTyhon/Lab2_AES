@@ -2,7 +2,6 @@ x64/
 .idea/
 .vs/
 .vscode/
-commands.txt
 docker-compose.debug.yml
 docker-compose.yml
 .dockerignore
