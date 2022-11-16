@@ -1,0 +1,3 @@
+C:/Users/Marko/source/repos/ACS_Lab2_Tykhonovskyi_K23_1/ACS_Lab2_Tykhonovskyi_K23_1/build/CMakeFiles/main.dir
+C:/Users/Marko/source/repos/ACS_Lab2_Tykhonovskyi_K23_1/ACS_Lab2_Tykhonovskyi_K23_1/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Marko/source/repos/ACS_Lab2_Tykhonovskyi_K23_1/ACS_Lab2_Tykhonovskyi_K23_1/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Marko\source\repos\ACS_Lab2_Tykhonovskyi_K23_1\ACS_Lab2_Tykhonovskyi_K23_1\build\CMakeFiles\ede2b666891319a7fac7ce540c763127\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C3604974-5652-34C1-ABAA-C249BD9EAF75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

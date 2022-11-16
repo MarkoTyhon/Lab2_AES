@@ -1,5 +1,9 @@
 x64/
-ACS_Lab2_Tykhonovskyi_K23_1.vcxproj
-ACS_Lab2_Tykhonovskyi_K23_1.vcxproj.filters
-ACS_Lab2_Tykhonovskyi_K23_1.vcxproj.user
+.idea/
+.vs/
+.vscode/
 commands.txt
+docker-compose.debug.yml
+docker-compose.yml
+.dockerignore
+CppProperties.json

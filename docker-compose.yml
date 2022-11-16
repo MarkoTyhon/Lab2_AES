@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  acslab2tykhonovskyik231:
+    image: acslab2tykhonovskyik231
+    build:
+      context: .
+      dockerfile: ./Dockerfile
