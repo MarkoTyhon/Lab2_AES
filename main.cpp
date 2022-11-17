@@ -13,8 +13,11 @@ int main() {
 	FileParser parser;
 	parser.getCommands("commands.txt");
 
+	
 	Processor CPU;
 	CPU.mainProc(parser.cmd_list);
 }
+
+
 
 

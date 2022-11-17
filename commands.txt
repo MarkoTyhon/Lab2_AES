@@ -1,3 +1,1 @@
-load mem,-2344
-mov stack,324
-xor stack[0],mem[0]
+mov stack,-2

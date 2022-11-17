@@ -151,7 +151,6 @@ void Processor::doCommand() {
 std::string Processor::gtNVlFrStck(int indx) {
 	std::stack<std::string> loc_stack;
 	loc_stack = stack1;
-	std::cout << loc_stack.size();
 	while (loc_stack.size() != indx + 1) {
 		loc_stack.pop();
 	}
