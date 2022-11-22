@@ -166,7 +166,7 @@ void Processor::gtAllVlFrStck() {
 		buf = loc_stack.top();
 		for (int i = 0; i < BIT / 8; i++) {
 			std::cout << buf.substr(i * 8, 8);
-			if (i != BIT/8-1) std::cout << ".";
+			if (i != BIT/8-1) std::cout << "|";
 		}
 		std::cout << "\t";
 		loc_stack.pop();
