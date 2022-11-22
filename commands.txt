@@ -1,1 +1,2 @@
-mov stack,-2
+mov stack,4294967290
+load mem,4294967290

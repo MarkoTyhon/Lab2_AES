@@ -76,14 +76,14 @@ std::string Processor::getValue(int indx) {
 		return mem.getFromMem(std::stoi(curr_command[indx].substr(curr_command[indx].length() - 2, 1).c_str()));
 	}
 	else {
-		int int_value = std::stoi(curr_command[indx].c_str());
+		int int_value = std::stoll(curr_command[indx].c_str());
 		bin.numToBin(int_value);
 		return bin.str_bin_num;
 	}
 }
 
 void Processor::opMOV() {
-	int int_value = std::stoi(curr_command[2].c_str());
+	int int_value = std::stoll(curr_command[2].c_str());
 	bin.numToBin(int_value);
 	stack1.push(bin.str_bin_num);
 
