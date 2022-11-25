@@ -1,23 +1,21 @@
 #include <iostream>
-#include <vector>
-#include <string>
+#include <bitset>
+#include <climits>
 
-#include "fileParser.h"
-#include "binTranslator.h"
-#include "hexTranslator.h"
-#include "memory.h"
-#include "processor.h"
+int main()
+{
+    union
+    {
+        float input; // assumes sizeof(float) == sizeof(int)
+        int   output;
+    } data;
 
+    data.input = 1.0;
 
-int main() {
-	FileParser parser;
-	parser.getCommands("commands.txt");
+    std::bitset<sizeof(float)* CHAR_BIT> bits(data.output);
+    std::cout << bits << std::endl;
 
-	
-	Processor CPU;
-	CPU.mainProc(parser.cmd_list);
+    // or
+    std::cout << "BIT 4: " << bits[4] << std::endl;
+    std::cout << "BIT 7: " << bits[7] << std::endl;
 }
-
-
-
-

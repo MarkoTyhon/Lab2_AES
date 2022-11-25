@@ -1,8 +1,9 @@
 x64/
+build/
 .idea/
 .vs/
 .vscode/
-docker-compose.debug.yml
-docker-compose.yml
 .dockerignore
-CppProperties.json
+docker-compose.yml
+docker-compose.debug.yml
+CMakeSettings.json

@@ -10,6 +10,6 @@
 
 
 
-void BinTranslator::numToBin(int dec_num) {
+void BinTranslator::numToBin(float dec_num) {
 	str_bin_num = std::bitset<BIT>(dec_num).to_string();
 }
